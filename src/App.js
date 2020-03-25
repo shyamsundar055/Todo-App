@@ -1,15 +1,17 @@
 import React from 'react';
 import './App.css';
-import ToDoItems from './components/todoitems'
-import todosData from './components/tododata'
+import ToDoItems from './components/todoitems' 
 
 class App extends React.Component {
   constructor() {
     super();
+
+    let todoFromLocal = localStorage.getItem("todosData") ? JSON.parse(localStorage.getItem("todosData")) : [];
+
     this.state = {
-      todoItems: todosData,
-      todoItemsCount: todosData.length,
-      todoItemsPending: todosData.filter((item) => { return item.itemCompleted === false; }).length
+      todoItems: todoFromLocal,
+      todoItemsCount: todoFromLocal.length,
+      todoItemsPending: todoFromLocal.filter((item) => { return item.itemCompleted === false; }).length
     }
 
     this.enterPressed = this.enterPressed.bind(this);
@@ -19,21 +21,33 @@ class App extends React.Component {
 
   }
 
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.todoItems.length > 0)
+      localStorage.setItem("todosData",JSON.stringify(this.state.todoItems)); 
+    else
+      localStorage.removeItem("todosData");
+
+    if(prevState.todoItems !== this.state.todoItems){
+      this.setState({
+        todoItemsCount: this.state.todoItems.length,
+        todoItemsPending :this.state.todoItems.filter((item) => { return item.itemCompleted === false; }).length
+      })
+    }
+  } 
+
   enterPressed(event) { 
     if (event.key === "Enter"  && event.target.value.trim() !== "") { 
       let inputItemName = event.target.value.trim();
       event.target.value = "";
 
       this.setState(prevState => {
-        let updatedToDoItems = prevState.todoItems;
-        const itemsCount = updatedToDoItems.length
-        const newItem = { itemId: itemsCount + 1, itemName: inputItemName, itemCompleted: false }
-        updatedToDoItems.push(newItem);
+        let updatedToDoItems = [...prevState.todoItems]; 
+        
+        const newItem = { itemId: Math.random(), itemName: inputItemName, itemCompleted: false }
+        updatedToDoItems.push(newItem); 
 
         return {
-          todoGroups: updatedToDoItems,
-          todoItemsCount: updatedToDoItems.length,
-          todoItemsPending: updatedToDoItems.filter((item) => { return item.itemCompleted === false; }).length
+          todoItems: updatedToDoItems 
         }
       })
     }
@@ -41,25 +55,24 @@ class App extends React.Component {
 
   updateAllItems() {
     this.setState(prevState => {
-      let updatedToDoItems = prevState.todoItems;
-      let selectAllItems = false;
+      let updatedToDoItems = [...prevState.todoItems];
+      let allItemsCompleted = false;
 
       for (let i = 0; i < updatedToDoItems.length; i++) {
         if (!updatedToDoItems[i].itemCompleted) {
-          selectAllItems = true;
+          allItemsCompleted = true;
           break;
         }
       }
 
 
       updatedToDoItems = updatedToDoItems.map(item => {
-        item.itemCompleted = selectAllItems;
+        item.itemCompleted = allItemsCompleted;
         return item
       })
+
       return {
-        todoItems: updatedToDoItems,
-        todoItemsCount: updatedToDoItems.length,
-        todoItemsPending: updatedToDoItems.filter((item) => { return item.itemCompleted === false; }).length
+        todoItems: updatedToDoItems 
       }
     })
   }
@@ -67,7 +80,7 @@ class App extends React.Component {
   changeItemStatus(itemId) {
     this.setState(prevState => {
 
-      let updatedToDoItems = prevState.todoItems;
+      let updatedToDoItems = [...prevState.todoItems];
 
       updatedToDoItems = updatedToDoItems.map(item => {
         if (item.itemId === itemId) {
@@ -78,9 +91,7 @@ class App extends React.Component {
       })
 
       return {
-        todoItems: updatedToDoItems,
-        todoItemsCount: updatedToDoItems.length,
-        todoItemsPending: updatedToDoItems.filter((item) => { return item.itemCompleted === false; }).length
+        todoItems: updatedToDoItems 
       }
     })
 
@@ -88,21 +99,21 @@ class App extends React.Component {
 
   handleDelete(itemId) {
     this.setState(prevState => {
-      let updatedToDoItems = prevState.todoItems;
+      let updatedToDoItems = [...prevState.todoItems];
       if (itemId) {
         updatedToDoItems = updatedToDoItems.filter((item) => { return item.itemId !== itemId; })
       }
       else {
         updatedToDoItems = updatedToDoItems.filter((item) => { return item.itemCompleted === false; })
-      }
+      } 
 
       return {
-        todoItems: updatedToDoItems,
-        todoItemsCount: updatedToDoItems.length,
-        todoItemsPending: updatedToDoItems.filter((item) => { return item.itemCompleted === false; }).length
+        todoItems: updatedToDoItems 
       }
     })
   }
+
+  
 
   render() {
     return (
