@@ -121,10 +121,9 @@ class App extends React.Component {
       <>
         <div className="jumbotron jumbotron-fluid">
           <div className="container">
-            <h1 className="display-4 text-center"><i className="fa fa-list"></i>&nbsp;ToDos App</h1>
+            <h1 className="display-4 text-center"><i className="fa fa-list"></i>&nbsp;ToDos App</h1> 
           </div>
-        </div>
-
+        </div> 
         <div className="container">
           <div className="input-group input-group-lg">
             <div className="input-group-prepend">
@@ -151,10 +150,12 @@ class App extends React.Component {
           handleDelete={this.handleDelete}
           todoItemsCount={this.state.todoItemsCount}
           todoItemsPending={this.state.todoItemsPending} />
-
-        <footer className="footer">
+        <div className="container">
+            &nbsp;
+        </div>
+        <footer className="text-center text-muted font-weight-light">
           <div className="container">
-            <span className="text-muted">Developed by <a href="https://github.com/shyamsundar055" target="_blank" rel="noopener noreferrer">Shyam Sundar</a></span>
+            <span style={{fontSize:"12px"}} >Created by <a href="https://github.com/shyamsundar055" target="_blank" rel="noopener noreferrer">Shyam Sundar</a></span>
           </div>
         </footer>
       </>
