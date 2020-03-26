@@ -130,7 +130,7 @@ class App extends React.Component {
       <>
         <div className="jumbotron jumbotron-fluid">
           <div className="container">
-            <h1 className="display-4 text-center"><i className="fa fa-list"></i>&nbsp;ToDos App</h1> 
+            <h1 className="display-4 text-center"><i className="fa fa-list"></i>&nbsp;ToDos</h1> 
           </div>
         </div> 
         <div className="container">
