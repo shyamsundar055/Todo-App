@@ -36,10 +36,19 @@ class App extends React.Component {
     }
   }
 
-  enterPressed(event) {
-    if (event.key === "Enter" && event.target.value.trim() !== "") {
-      let inputItemName = event.target.value.trim();
-      event.target.value = "";
+  enterPressed(event) {  
+    if ((event.key === "Enter"  && event.target.value.trim() !== "" ) || (event.type==="click" && document.getElementById("txtInputItem").value.trim() !== "")) {
+
+      let inputItemName="";
+
+      if(event.type==="click"){
+        inputItemName = document.getElementById("txtInputItem").value.trim();
+        document.getElementById("txtInputItem").value ="";
+      }
+      else{
+        inputItemName =  event.target.value.trim();
+        event.target.value = "";
+      }
 
       this.setState(prevState => {
         let updatedToDoItems = [...prevState.todoItems];
@@ -127,19 +136,20 @@ class App extends React.Component {
         <div className="container">
           <div className="input-group input-group-lg">
             <div className="input-group-prepend">
-              <button className="btn btn-info btn-sm" type="button" onClick={this.updateAllItems} >Mark / Unmark All</button>
+              <button className="btn btn-info btn-sm" type="button" onClick={this.updateAllItems}  title="Mark/Unmark All"><i className="fa fa-check" aria-hidden="true"></i></button>
             </div>
             <input type="text"
               className="form-control"
               placeholder="Enter item to add"
-              aria-label="Sizing example input"
+              aria-label="Enter item to add"
               aria-describedby="inputGroup-sizing-lg"
+              id="txtInputItem"
               name="txtInputItem"
               autoComplete="off"
               onKeyPress={this.enterPressed} />
-            {/* <div className="input-group-append">
-              <button className="btn btn-info" type="button" onClick={this.enterPressed} ><i className="fa fa-plus"></i></button>
-            </div> */}
+            <div className="input-group-append">
+              <button className="btn btn-info" type="button" onClick={this.enterPressed} title="Add item"><i className="fa fa-plus"></i></button>
+            </div>
           </div> 
         </div>
         <div className="container">

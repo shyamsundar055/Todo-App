@@ -17,7 +17,7 @@ function ToDoItems(props) {
                                 <label className="form-check-label lead" style={item.itemCompleted ? completedStyle : null} htmlFor={"defaultCheck" + item.itemId}>
                                     {item.itemName}
                                 </label>
-                                <button type="button" className="close" aria-label="Close" onClick={() => props.handleDelete(item.itemId)}>
+                                <button type="button" className="close" aria-label="Close" title="Remove item" onClick={() => props.handleDelete(item.itemId)}>
                                     <span aria-hidden="true" style={{ color: "red" }}>&times;</span>
                                 </button>
                             </div>
