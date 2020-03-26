@@ -6,6 +6,7 @@ class App extends React.Component {
   constructor() {
     super();
 
+    //TODO: set expiry time for localstorage
     let todoFromLocal = localStorage.getItem("todosData") ? JSON.parse(localStorage.getItem("todosData")) : [];
 
     this.state = {
