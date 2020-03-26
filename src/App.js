@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import ToDoItems from './components/todoitems' 
+import ToDoItems from './components/todoitems'
 
 class App extends React.Component {
   constructor() {
@@ -22,33 +22,33 @@ class App extends React.Component {
 
   }
 
-  componentDidUpdate(prevProps, prevState){
-    if(this.state.todoItems.length > 0)
-      localStorage.setItem("todosData",JSON.stringify(this.state.todoItems)); 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.todoItems.length > 0)
+      localStorage.setItem("todosData", JSON.stringify(this.state.todoItems));
     else
       localStorage.removeItem("todosData");
 
-    if(prevState.todoItems !== this.state.todoItems){
+    if (prevState.todoItems !== this.state.todoItems) {
       this.setState({
         todoItemsCount: this.state.todoItems.length,
-        todoItemsPending :this.state.todoItems.filter((item) => { return item.itemCompleted === false; }).length
+        todoItemsPending: this.state.todoItems.filter((item) => { return item.itemCompleted === false; }).length
       })
     }
-  } 
+  }
 
-  enterPressed(event) { 
-    if (event.key === "Enter"  && event.target.value.trim() !== "") { 
+  enterPressed(event) {
+    if (event.key === "Enter" && event.target.value.trim() !== "") {
       let inputItemName = event.target.value.trim();
       event.target.value = "";
 
       this.setState(prevState => {
-        let updatedToDoItems = [...prevState.todoItems]; 
-        
+        let updatedToDoItems = [...prevState.todoItems];
+
         const newItem = { itemId: Math.random(), itemName: inputItemName, itemCompleted: false }
-        updatedToDoItems.push(newItem); 
+        updatedToDoItems.push(newItem);
 
         return {
-          todoItems: updatedToDoItems 
+          todoItems: updatedToDoItems
         }
       })
     }
@@ -73,7 +73,7 @@ class App extends React.Component {
       })
 
       return {
-        todoItems: updatedToDoItems 
+        todoItems: updatedToDoItems
       }
     })
   }
@@ -92,7 +92,7 @@ class App extends React.Component {
       })
 
       return {
-        todoItems: updatedToDoItems 
+        todoItems: updatedToDoItems
       }
     })
 
@@ -106,28 +106,29 @@ class App extends React.Component {
       }
       else {
         updatedToDoItems = updatedToDoItems.filter((item) => { return item.itemCompleted === false; })
-      } 
+      }
 
       return {
-        todoItems: updatedToDoItems 
+        todoItems: updatedToDoItems
       }
     })
   }
 
-  
+
 
   render() {
     return (
-      <div className="container">
-        <div className="jumbotron">
+      <>
+        <div className="jumbotron jumbotron-fluid">
           <div className="container">
             <h1 className="display-4 text-center"><i className="fa fa-list"></i>&nbsp;ToDos App</h1>
           </div>
         </div>
+
         <div className="container">
           <div className="input-group input-group-lg">
             <div className="input-group-prepend">
-              <button className="btn btn-info" type="button" onClick={this.updateAllItems} >Mark / Unmark All</button>
+              <button className="btn btn-info btn-sm" type="button" onClick={this.updateAllItems} >Mark / Unmark All</button>
             </div>
             <input type="text"
               className="form-control"
@@ -140,16 +141,23 @@ class App extends React.Component {
             {/* <div className="input-group-append">
               <button className="btn btn-info" type="button" onClick={this.enterPressed} ><i className="fa fa-plus"></i></button>
             </div> */}
-          </div>
-
+          </div> 
         </div>
-
+        <div className="container">
+            &nbsp;
+        </div>
         <ToDoItems items={this.state.todoItems}
           changeItemStatus={this.changeItemStatus}
           handleDelete={this.handleDelete}
           todoItemsCount={this.state.todoItemsCount}
           todoItemsPending={this.state.todoItemsPending} />
-      </div>
+
+        <footer className="footer">
+          <div className="container">
+            <span className="text-muted">Developed by <a href="https://github.com/shyamsundar055" target="_blank" rel="noopener noreferrer">Shyam Sundar</a></span>
+          </div>
+        </footer>
+      </>
     )
   }
 
